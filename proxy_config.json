@@ -1,0 +1,9 @@
+{
+    "audience": "https://watts-dev.data.kit.edu",
+    "tts": "https://watts-dev.data.kit.edu",
+    "iam_endpoint": "https://iam-test.indigo-datacloud.eu/",
+    "credential_endpoint": "https://watts-dev.data.kit.edu/api/v2/iam/credential",
+    "local_cache_expiration_time": 259200,
+    "lock_file_age": 20,
+    "cache_dir": "/tmp"
+}
