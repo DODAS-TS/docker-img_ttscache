@@ -1,4 +1,4 @@
-FROM cloudpg/centos-7-grid
+FROM dodasts/centos:7-grid
 LABEL maintainer="mirco.tracolli@pg.infn.it"
 LABEL Version=1.0.1
 
