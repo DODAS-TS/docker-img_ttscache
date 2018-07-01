@@ -33,7 +33,7 @@ def ttscache_get_proxy():
             logging.debug("Send response")
             response = make_response(body)
             response.headers['Content-Type'] = header.get('Content-Type')
-            return response
+            return response, 500
 
 
 @APP.route('/health', methods=['GET'])
