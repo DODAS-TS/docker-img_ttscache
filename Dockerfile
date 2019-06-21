@@ -23,6 +23,9 @@ CMD ["/usr/bin/python", "/opt/ttscache/app_ttscache.py"]
 #   IAM_REFRESH_TOKEN: None
 #   IAM_CLIENT_ID: None
 #   IAM_CLIENT_SECRET: None
+#   IAM_MAP_CLIENT_ID: None
+#   IAM_MAP_CLIENT_SECRET: None
+#   IAM_MAP_GROUP: None
 #   MARATHON_USER: None
 #   MARATHON_PASSWD: None
 #   ZOOKEEPER_HOST_LIST: None
