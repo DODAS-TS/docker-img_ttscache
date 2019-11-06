@@ -57,9 +57,11 @@ def get_dn_map():
     userTuples = []
     for grp in result['Resources']:
         if grp['displayName'] == group:
+            logging.debug(grp)
             userTuples = [(x['display'], x['value']) for x in grp['members']]
             break
         elif group == "ALL":
+            logging.debug(grp)
             for usr in grp['members']:
                 userTuples.append((usr['display'], usr['value']))
 
