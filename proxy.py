@@ -140,8 +140,12 @@ class ProxyManager(object):
                 logging.debug("Token about to expire. Get tts data...")
                 tts_data = self.get_tts_data(True)
             else:
-                logging.debug("Token OK.")
-                return True
+                if os.path.exists(self.config.user.key) and os.path.getsize(self.config.user.key) > 0:  
+                    logging.debug("Token OK.")
+                    return True
+                else:
+                    logging.debug("%s has zero lenght... getting tts data again" % self.config.user.key)
+                    tts_data = self.get_tts_data(True)
         else:
             logging.debug("Token not exist, get exchange token...")
             self.exchanged_token = self.get_exchange_token()
@@ -481,6 +485,19 @@ class ProxyManager(object):
 
     def generate_proxy(self):
         """Generates proxy with grid-proxy-init only if there are not errors."""
+
+
+        if os.path.exists(self.config.user.proxy):
+            logging.debug("Check proxy cert : %s", self.config.user.proxy)
+            ctime = os.stat(self.config.user.proxy).st_ctime
+            since = time.time() - ctime
+            logging.debug("Check expiration time: %s > %s",
+                          since, self.config.local_cache.expiration_time)
+            if since < self.config.local_cache.expiration_time:
+                logging.debug("cached proxy file still ok")
+                return self.config.user.proxy
+            else:
+                logging.debug("proxy file about to expire. Get tts data...")
 
         if self.check_tts_data():
             logging.debug("Generating proxy for %s", self.exchanged_token)
