@@ -140,7 +140,7 @@ class ProxyManager(object):
                 logging.debug("Token about to expire. Get tts data...")
                 tts_data = self.get_tts_data(True)
             else:
-                if os.path.exists(self.config.user.key) and os.path.getsize(self.config.user.key) > 0:  
+                if (os.path.exists(self.config.user.key) and os.path.getsize(self.config.user.key) > 0) and ( os.path.exists(self.config.user.cert) and os.path.getsize(self.config.user.cert) > 0 ):  
                     logging.debug("Token OK.")
                     return True
                 else:
@@ -422,7 +422,9 @@ class ProxyManager(object):
                           self.config.lock_file.path, age, self.config.lock_file.age)
             if age < self.config.lock_file.age:
                 logging.debug("Update in progres. Go to sleep...")
-                time.sleep(self.config.lock_file.age - age)
+                #time.sleep(self.config.lock_file.age - age)
+                logging.debug("return and try to use the older proxy file")
+                return False
             else:
                 logging.debug("Stale lock file. Removing %s...",
                               self.config.lock_file.path)
@@ -498,6 +500,8 @@ class ProxyManager(object):
                 return self.config.user.proxy
             else:
                 logging.debug("proxy file about to expire. Get tts data...")
+        else:
+            logging.debug("WARNING: proxy file does not exist at all.. try to get it again. Get tts data...")
 
         if self.check_tts_data():
             logging.debug("Generating proxy for %s", self.exchanged_token)
@@ -528,6 +532,21 @@ class ProxyManager(object):
                 return self.config.user.proxy
         else:
             logging.error("Error occured in check_tts_data!")
+            logging.debug("last try is to use the old proxy... it should be still valid for a while")
+            if os.path.exists(self.config.user.proxy): 
+                logging.debug("Check proxy cert : %s", self.config.user.proxy) 
+                ctime = os.stat(self.config.user.proxy).st_ctime 
+                since = time.time() - ctime 
+                logging.debug("Check expiration time: %s > %s", 
+                          since, self.config.local_cache.expiration_time) 
+                if since < (self.config.local_cache.expiration_time+30): 
+                    logging.debug("cached proxy file can be considered still ok") 
+                    return self.config.user.proxy 
+                else:
+                    logging.debug("proxy file age is: %s which is > %s", % since, (self.config.local_cache.expiration_time+30) )
+            else: 
+                logging.debug("older proxy file does not exist.. error occured in check_tts_data and thus gives up...") 
+
 
 
 def get():
@@ -607,3 +626,4 @@ def get():
         'Content-Type': "text/html"
     }
     return header, "<p>grid-proxy-info failed</p>"
+
