@@ -543,7 +543,7 @@ class ProxyManager(object):
                     logging.debug("cached proxy file can be considered still ok") 
                     return self.config.user.proxy 
                 else:
-                    logging.debug("proxy file age is: %s which is > %s", % since, (self.config.local_cache.expiration_time+30) )
+                    logging.debug("proxy file age is: %s which is > %s",  since, (self.config.local_cache.expiration_time+30) )
             else: 
                 logging.debug("older proxy file does not exist.. error occured in check_tts_data and thus gives up...") 
 
