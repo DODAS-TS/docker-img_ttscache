@@ -528,6 +528,11 @@ class ProxyManager(object):
                               self.exchanged_token)
                 logging.error("grid-proxy-init failed stdout %s", proxy_out)
                 logging.error("grid-proxy-init failed stderr %s", proxy_err)
+                logging.error("removing cached files: %s, %s, %s... possibly buggy", 
+                              self.config.user.key, self.config.user.cert,self.config.tts.output_data )
+                os.remove(self.config.user.key)
+                os.remove(self.config.user.cert)
+                os.remove(self.config.tts.output_data) 
             else:
                 return self.config.user.proxy
         else:
@@ -626,4 +631,3 @@ def get():
         'Content-Type': "text/html"
     }
     return header, "<p>grid-proxy-info failed</p>"
-
