@@ -1,18 +1,16 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
 sphinx = "*"
 
-
 [packages]
-
 kazoo = "*"
 requests = ">=2.20.0"
 flask = "*"
 pycurl = "*"
+
+[pipenv]
+allow_prereleases = true
